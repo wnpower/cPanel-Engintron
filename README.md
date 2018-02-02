@@ -1,6 +1,6 @@
 <h1>cPanel Nginx Installer</h1>
 <p>Este script instala y configura Nginx (provisto por Engintron)</p>
-<p><strong>Modo de uso:</strong> wget&nbsp;https://raw.githubusercontent.com/imorandinwnp/cPanel-Nginx/master/install_engintron.sh&nbsp;&amp;&amp; bash install_engintron.sh&nbsp;</p>
+<p><strong>Modo de uso:</strong> wget&nbsp;https://raw.githubusercontent.com/wnpower/cPanel-Nginx/master/install_engintron.sh&nbsp;&amp;&amp; bash install_engintron.sh&nbsp;</p>
 <ol>
 <li>Verifica si existe otro plugin normalmente usado "nginxcp" y lo elimina antes</li>
 <li>Baja e instala Engintron</li>
