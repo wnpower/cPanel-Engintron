@@ -7,7 +7,7 @@ echo "██║    ██║████╗  ██║██╔══██╗�
 echo "██║ █╗ ██║██╔██╗ ██║██████╔╝██║   ██║██║ █╗ ██║█████╗  ██████╔╝   ██║     ██║   ██║██╔████╔██║"
 echo "██║███╗██║██║╚██╗██║██╔═══╝ ██║   ██║██║███╗██║██╔══╝  ██╔══██╗   ██║     ██║   ██║██║╚██╔╝██║"
 echo "╚███╔███╔╝██║ ╚████║██║     ╚██████╔╝╚███╔███╔╝███████╗██║  ██║██╗╚██████╗╚██████╔╝██║ ╚═╝ ██║"
-echo "╚══╝╚══╝ ╚═╝  ╚═══╝╚═╝      ╚═════╝  ╚══╝╚══╝ ╚══════╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝"
+echo " ╚══╝╚══╝ ╚═╝  ╚═══╝╚═╝      ╚═════╝  ╚══╝╚══╝ ╚══════╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝"
 
 echo ""
 echo "               ####################### Nginx Installer #######################              "
@@ -38,6 +38,16 @@ configure_dynamic()
         sed -i "s/^proxy_cache_valid.*/proxy_cache_valid\t200 30s;/" /etc/nginx/proxy_params_dynamic
 }
 
+configure_nocacheoncookie()
+{
+        sed -i -e '/# DESHABILITA CACHE SI HAY COOKIE PHP/,+4d' /etc/nginx/custom_rules
+        printf "\n# DESHABILITA CACHE SI HAY COOKIE PHP\n" >> /etc/nginx/custom_rules
+        printf "if (\$http_cookie ~* \".*PHPSESSID.*\") {\n" >> /etc/nginx/custom_rules
+        printf "\tset \$CACHE_BYPASS_FOR_DYNAMIC 1;\n" >> /etc/nginx/custom_rules
+        printf "\tset \$EXPIRES_FOR_DYNAMIC 0;\n" >> /etc/nginx/custom_rules
+        printf "}\n" >> /etc/nginx/custom_rules
+}
+
 
 if [ -f /usr/local/src/publicnginx/nginxinstaller ]; then
 	echo "NginxCP detectado, eliminando antes..."
@@ -51,6 +61,7 @@ cd /; rm -f engintron.sh; wget --no-check-certificate https://raw.githubusercont
 echo "Configurando..."
 configure_cloudflare
 configure_dynamic
+configure_nocacheoncookie
 
 echo "Reiniciando servicios..."
 service httpd restart
