@@ -90,8 +90,9 @@ EOF
 
 configure_access_log()
 {
-	sed -i 's/access_log\(.*\);$/access_log\1 main;/' /etc/nginx/nginx.conf
-	sed -i "/access_log.*/i\ \ \ \ log_format main '\$remote_addr - \$remote_user \[\$time_local\] \"\$request\" \$status \$body_bytes_sent \"\$http_referer\" \"\$http_user_agent\" \"\$host\"';" /etc/nginx/nginx.conf
+        sed -i 's/access_log.*\;$/access_log \/var\/log\/nginx\/access.log main;/' /etc/nginx/nginx.conf
+        sed -i '/log_format main/d' /etc/nginx/nginx.conf
+        sed -i "/access_log.*/i\ \ \ \ log_format main '\$remote_addr - \$remote_user \[\$time_local\] \"\$request\" \$status \$body_bytes_sent \"\$http_referer\" \"\$http_user_agent\" \"\$host\"';" /etc/nginx/nginx.conf
 }
 
 if [ -f /usr/local/src/publicnginx/nginxinstaller ]; then
