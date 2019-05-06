@@ -95,6 +95,11 @@ configure_access_log()
         sed -i "/access_log.*/i\ \ \ \ log_format main '\$remote_addr - \$remote_user \[\$time_local\] \"\$request\" \$status \$body_bytes_sent \"\$http_referer\" \"\$http_user_agent\" \"\$host\"';" /etc/nginx/nginx.conf
 }
 
+fix_logrotate()
+{
+        sed -i 's/create 640.*/create 640 nginx root/' /etc/logrotate.d/nginx
+}
+
 if [ -f /usr/local/src/publicnginx/nginxinstaller ]; then
 	echo "NginxCP detectado, eliminando antes..."
 	/usr/local/src/publicnginx/nginxinstaller uninstall
@@ -111,6 +116,7 @@ configure_nocacheoncookie
 configure_apachelogs
 configure_template_header_awstats
 configure_access_log
+fix_logrotate
 
 echo "Reiniciando servicios..."
 service httpd restart
