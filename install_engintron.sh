@@ -100,6 +100,11 @@ fix_logrotate()
         sed -i 's/create 640.*/create 640 nginx root/' /etc/logrotate.d/nginx
 }
 
+configure_nginxconf()
+{
+        sed -i 's/client_max_body_size.*/client_max_body_size           128m;/' /etc/nginx/nginx.conf
+}
+
 if [ -f /usr/local/src/publicnginx/nginxinstaller ]; then
 	echo "NginxCP detectado, eliminando antes..."
 	/usr/local/src/publicnginx/nginxinstaller uninstall
@@ -117,6 +122,7 @@ configure_apachelogs
 configure_template_header_awstats
 configure_access_log
 fix_logrotate
+configure_nginxconf
 
 echo "Reiniciando servicios..."
 service httpd restart
