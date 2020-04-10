@@ -124,6 +124,9 @@ configure_access_log
 fix_logrotate
 configure_nginxconf
 
+# LIMPIEZA DE LINEAS VACIAS
+sed -i '/^$/N;/^\n$/D' /etc/nginx/custom_rules
+
 echo "Reiniciando servicios..."
 service httpd restart
 service nginx restart
